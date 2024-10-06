@@ -104,7 +104,7 @@ function draw() {
 // draw bg image
   
  if (myMusic.isPlaying()) {text(111,100,100)}
- text(222,100,200
+ text(222,100,200)
  if (frameCount >= bg_appear_start_frame && frameCount <= bg_appear_end_frame) {
     alpha_bg = map(frameCount, bg_appear_start_frame, bg_appear_end_frame, 0, 255);  
   }
