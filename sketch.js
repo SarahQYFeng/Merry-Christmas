@@ -64,7 +64,7 @@ function setup() {
   input.style('color', 'rgb(0,47,197)');
 
   start_button = createButton('Start?');
-  start_button.position(input.x + input.width + 40, windowHeight / 2);
+  start_button.position(windowWidth / 2 - 20 , windowHeight / 2 - 50);
   
   start_button.style('background-color', 'white');
   start_button.style('color', 'rgb(0,47,197)');
@@ -117,6 +117,8 @@ function draw() {
 
 // draw bg image
   if (started) {
+    if (myMusic.isPlaying()) {text(111,100,100)}
+    text(222,100,200)
     if (frameCount >= bg_appear_start_frame && frameCount <= bg_appear_end_frame) {
       alpha_bg = map(frameCount, bg_appear_start_frame, bg_appear_end_frame, 0, 255);  
     }
