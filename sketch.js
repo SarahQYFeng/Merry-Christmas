@@ -27,6 +27,7 @@ let restart_show = false;
 
 let myMusic;
 let start_button;
+let started = false
 
 let textsize = 32
 let word_sepration = 200
@@ -62,9 +63,8 @@ function setup() {
   input.style('background-color', 'white'); 
   input.style('color', 'rgb(0,47,197)');
 
-  start_button = createButton('It\u2019s me');
+  start_button = createButton('Start playing');
   start_button.position(input.x + input.width + 40, 150);
-  start_button.hide();
   
   start_button.style('background-color', 'white');
   start_button.style('color', 'rgb(0,47,197)');
@@ -75,7 +75,7 @@ function setup() {
   start_button.style('border-radius', '3px');
   start_button.style('cursor', 'pointer');
 
-  start_button.mousePressed(play_music);
+  start_button.mousePressed(start_playing);
   
   button = createButton('It\u2019s me');
   button.position(input.x + input.width + 40, 150);
@@ -116,82 +116,82 @@ function draw() {
   textSize(textsize);
 
 // draw bg image
-  
- if (myMusic.isPlaying()) {text(111,100,100)}
- text(222,100,200)
- if (frameCount >= bg_appear_start_frame && frameCount <= bg_appear_end_frame) {
-    alpha_bg = map(frameCount, bg_appear_start_frame, bg_appear_end_frame, 0, 255);  
-  }
-  
- //if (frameCount >= bg_fade_start_frame && frameCount <= bg_fade_end_frame) {
-    //alpha_bg = map(frameCount, bg_fade_start_frame, bg_fade_end_frame, 255, 10);  
-  //}
-  
-  background(220, 221, 240, alpha_bg);
+  if (started) {
+    if (myMusic.isPlaying()) {text(111,100,100)}
+    text(222,100,200)
+    if (frameCount >= bg_appear_start_frame && frameCount <= bg_appear_end_frame) {
+      alpha_bg = map(frameCount, bg_appear_start_frame, bg_appear_end_frame, 0, 255);  
+    }
 
-// draw images
-  
-  set_alpha_imgs()
-  
-//draw text 
-  
-  for (let i = 0; i < word_heights.length; i++) {
-    text(lyrics[(i + loop_idx) % lyrics.length], width * word_widths[(i + loop_idx) % word_heights.length], word_heights[(i + loop_idx) % word_heights.length]);
-  }
-  
-  word_heights[current_first_idx] += fall_speed
-  
-  for (let i = 1; i < word_heights.length; i++) {
-    if (word_heights[current_first_idx] > word_sepration * i){
-      word_heights[(current_first_idx + i) % word_heights.length] += fall_speed
+    //if (frameCount >= bg_fade_start_frame && frameCount <= bg_fade_end_frame) {
+      //alpha_bg = map(frameCount, bg_fade_start_frame, bg_fade_end_frame, 255, 10);  
+    //}
+
+    background(220, 221, 240, alpha_bg);
+
+    // draw images
+
+    set_alpha_imgs()
+
+    //draw text 
+
+    for (let i = 0; i < word_heights.length; i++) {
+      text(lyrics[(i + loop_idx) % lyrics.length], width * word_widths[(i + loop_idx) % word_heights.length], word_heights[(i + loop_idx) % word_heights.length]);
+    }
+
+    word_heights[current_first_idx] += fall_speed
+
+    for (let i = 1; i < word_heights.length; i++) {
+      if (word_heights[current_first_idx] > word_sepration * i){
+        word_heights[(current_first_idx + i) % word_heights.length] += fall_speed
+      }
+    }
+
+    if (word_heights[current_first_idx] > height + 100){
+      word_heights[current_first_idx] = 0 - 100;
+      word_widths[current_first_idx] = Math.random()
+      current_first_idx++;
+      current_first_idx = current_first_idx % word_heights.length;
+      loop_idx++;
+      loop_idx = loop_idx % lyrics.length;
+    }
+
+
+    //draw finale
+
+    if (frameCount >= finale_start) {
+      alpha_bg = map(frameCount, finale_start, 4320, 0, 255);  
+      alpha_bg = constrain(alpha_bg, 0, 255);
+      background(0,47,197,alpha_bg);
+    }
+
+    if (frameCount >= finale_start && showInput) {
+      input.show(); 
+      button.show();
+      //restart_button.show();
+      textSize(16);
+      fill(255);
+      textAlign(LEFT, CENTER);
+      text('Your Name?',150, 130)
+    }
+    else { 
+      input.hide();  
+      button.hide(); 
+    }
+
+    if (userText) {
+      textSize(32);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      let sentence = "Merry Christmas, " + userText + "!";
+      text(sentence, windowWidth / 2, windowHeight / 2);
+      restart_show = true;
+    }
+
+    if (restart_show) {
+        restart_button.show();
     }
   }
-  
-  if (word_heights[current_first_idx] > height + 100){
-    word_heights[current_first_idx] = 0 - 100;
-    word_widths[current_first_idx] = Math.random()
-    current_first_idx++;
-    current_first_idx = current_first_idx % word_heights.length;
-    loop_idx++;
-    loop_idx = loop_idx % lyrics.length;
-  }
-  
-  
-//draw finale
-
-  if (frameCount >= finale_start) {
-    alpha_bg = map(frameCount, finale_start, 4320, 0, 255);  
-    alpha_bg = constrain(alpha_bg, 0, 255);
-    background(0,47,197,alpha_bg);
-  }
-  
-  if (frameCount >= finale_start && showInput) {
-    input.show(); 
-    button.show();
-    //restart_button.show();
-    textSize(16);
-    fill(255);
-    textAlign(LEFT, CENTER);
-    text('Your Name?',150, 130)
-  }
-  else { 
-    input.hide();  
-    button.hide(); 
-  }
-  
-  if (userText) {
-    textSize(32);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    let sentence = "Merry Christmas, " + userText + "!";
-    text(sentence, windowWidth / 2, windowHeight / 2);
-    restart_show = true;
-  }
-    
-  if (restart_show) {
-      restart_button.show();
-  }
-  
 }
 
 function displayText() {
@@ -220,7 +220,10 @@ function set_alpha_imgs() {
   }
 }
 
-function play_musics() { 
+function start_playing() { 
+  started = true;
+  frameCount = 0;
+  start_button.hide();
   myMusic.play();
   myMusic.setLoop(true);
 }
