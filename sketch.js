@@ -70,7 +70,7 @@ function setup() {
   start_button.style('color', 'rgb(0,47,197)');
   start_button.style('font-size', '16px');
   start_button.style('font-family', 'plantin');
-  start_button.style('border', 'none');        
+  start_button.style('border', '0.5px solid rgb(0,47,197)');        
   start_button.style('padding', '3px 12px');
   start_button.style('border-radius', '3px');
   start_button.style('cursor', 'pointer');
@@ -85,7 +85,7 @@ function setup() {
   button.style('color', 'rgb(0,47,197)');
   button.style('font-size', '16px');
   button.style('font-family', 'plantin');
-  button.style('border', 'none');        
+  button.style('border', '0.5px solid rgb(0,47,197)');      
   button.style('padding', '3px 12px');
   button.style('border-radius', '3px');
   button.style('cursor', 'pointer');
@@ -117,6 +117,7 @@ function draw() {
 
 // draw bg image
   if (started) {
+    
     if (frameCount >= bg_appear_start_frame && frameCount <= bg_appear_end_frame) {
       alpha_bg = map(frameCount, bg_appear_start_frame, bg_appear_end_frame, 0, 255);  
     }
