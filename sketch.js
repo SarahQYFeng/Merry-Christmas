@@ -63,8 +63,8 @@ function setup() {
   input.style('background-color', 'white'); 
   input.style('color', 'rgb(0,47,197)');
 
-  start_button = createButton('Start playing');
-  start_button.position(input.x + input.width + 40, 150);
+  start_button = createButton('Start?');
+  start_button.position(input.x + input.width + 40, windowHeight / 2);
   
   start_button.style('background-color', 'white');
   start_button.style('color', 'rgb(0,47,197)');
